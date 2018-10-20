@@ -17,7 +17,9 @@ set(INCLUDE_DIRS
 )
 
 set(CPP_SRCS
-	
+	hw/tb6612/Motor.cpp
+	hw/tb6612/Motor_driver.cpp
+	code/App/App.cpp
 )
 
 set(C_SRCS
@@ -25,8 +27,9 @@ set(C_SRCS
 	hw/gpio_f4/gpio_f4.c
 	hw/startup/hardfault.c
     hw/startup/vectors.c
+    utils/syscalls.c
 	main.c
-	hw/tb6612/tb6612.c
+#	hw/tb6612/tb6612.c
 )
 
 set(ASM_SRCS

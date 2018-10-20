@@ -7,18 +7,19 @@
 #include "platform_specific.h"
 
 #include "hw/core_init/core_init.h"
-#include "hw/tb6612/tb6612.h"
 
-void main(void)
+extern void app_run(void);
+
+int main(void)
 {
+    /* Place your initialisation code here. */
     core_init();
 
-    /* Place your initialisation code here. */
-    tb6612_init();
-    tb6612_test();
-
     /* Place your application code here. */
+    app_run();
 
     while (1)
         ;
+
+    return 0;
 }
