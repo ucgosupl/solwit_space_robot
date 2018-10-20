@@ -8,15 +8,16 @@ enable_language(ASM)
 project(template_stm32f4)
 
 set(INCLUDE_DIRS
-    code
-    hw
+	.
+#    code
+#    hw
     utils
     external/stm32
     external/cmsis
 )
 
 set(CPP_SRCS
-	 
+	
 )
 
 set(C_SRCS
@@ -25,6 +26,7 @@ set(C_SRCS
 	hw/startup/hardfault.c
     hw/startup/vectors.c
 	main.c
+	hw/tb6612/tb6612.c
 )
 
 set(ASM_SRCS

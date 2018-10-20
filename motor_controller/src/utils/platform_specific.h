@@ -7,18 +7,17 @@
 #ifndef _PLATFORM_SPECIFIC_H_
 #define _PLATFORM_SPECIFIC_H_
 
+/* System includes */
+#include <stddef.h>
+#include <stdbool.h>
+
+/* Platform includes */
+#include "stm32f4xx.h"
+
 /**
  * @defgroup utils_platform
  * @{
  */
-
-/**
- * Keyword to declare function or variable as private.
- *
- * PRIVATE keyword is used for symbols that should be available externally only
- * for certain test or debug builds and should be static in production.
- */
-#define PRIVATE              static
 
 /** External crystal frequency */
 #define HSE_FREQ              8000000ULL
