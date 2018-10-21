@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hw/tb6612/Motor_driver.hpp"
+#include "hw/uart/Serial.hpp"
 
 namespace app
 {
@@ -14,7 +15,8 @@ public:
     void run ();
 
 private:
-    hw::tb6612::Motor_driver motor_drv;
+    hw::tb6612::Motor_driver _motor_drv;
+    hw::uart::Serial _serial_drv;
 };
 
 }

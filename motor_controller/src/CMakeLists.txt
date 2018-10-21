@@ -19,6 +19,9 @@ set(INCLUDE_DIRS
 set(CPP_SRCS
 	hw/tb6612/Motor.cpp
 	hw/tb6612/Motor_driver.cpp
+	hw/uart/Uart.cpp
+	hw/uart/Utility.cpp
+	hw/uart/Serial.cpp
 	code/App/App.cpp
 )
 
@@ -29,7 +32,6 @@ set(C_SRCS
     hw/startup/vectors.c
     utils/syscalls.c
 	main.c
-#	hw/tb6612/tb6612.c
 )
 
 set(ASM_SRCS
