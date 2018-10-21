@@ -13,14 +13,14 @@ set(CORE_FLAGS "${CORE_FLAGS} -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffast-math")
 # -fno-exceptions - disable exception handling
 # fverbose-asm - additional comments for generated assembler code
 # -MMD - create dependency files
-set(CXX_FLAGS "-std=gnu++14 -O0 -g -fno-rtti -fno-exceptions -fverbose-asm -MMD")
+set(CXX_FLAGS "-std=gnu++14 -O2 -g -fno-rtti -fno-exceptions -fverbose-asm -MMD")
 
 # Compiler flags specific for C files
 # -std - C standard: c89, c99, gnu89,gnu99, iso9899:119409
 # -O0 - optimization level: -O0, -O1, -O2, -O3, -Os
 # fverbose-asm - additional comments for generated assembler code
 # -MMD - create dependency files
-set(C_FLAGS "-std=gnu89 -O0 -ffunction-sections -fdata-sections -fverbose-asm -MMD")
+set(C_FLAGS "-std=gnu89 -O2 -ffunction-sections -fdata-sections -fverbose-asm -MMD")
 
 set(ASM_FLAGS "-x assembler-with-cpp")
 
