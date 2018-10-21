@@ -13,7 +13,8 @@ namespace hw
 namespace tb6612
 {
 
-using motor_speed_t = uint32_t;
+using motor_speed_t = int32_t;
+constexpr motor_speed_t MOTOR_SPEED_MAX = 1000;
 
 class Motor
 {
@@ -38,6 +39,9 @@ private:
     const uint32_t _pin_pwm;
 
     reg::Hw_register<32> _tim_channel_reg;
+
+    void move_forward(motor_speed_t speed);
+    void move_backward(motor_speed_t speed);
 };
 
 }

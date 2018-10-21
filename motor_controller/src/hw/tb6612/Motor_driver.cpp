@@ -101,6 +101,38 @@ void Motor_driver::init()
     }
 }
 
+void Motor_driver::move_forward(motor_speed_t speed)
+{
+    motor_speed_set(motor_id_t::MOTOR_1, speed);
+    motor_speed_set(motor_id_t::MOTOR_2, speed);
+    motor_speed_set(motor_id_t::MOTOR_3, speed);
+    motor_speed_set(motor_id_t::MOTOR_4, speed);
+}
+
+void Motor_driver::move_backward(motor_speed_t speed)
+{
+    motor_speed_set(motor_id_t::MOTOR_1, -speed);
+    motor_speed_set(motor_id_t::MOTOR_2, -speed);
+    motor_speed_set(motor_id_t::MOTOR_3, -speed);
+    motor_speed_set(motor_id_t::MOTOR_4, -speed);
+}
+
+void Motor_driver::move_left(motor_speed_t speed)
+{
+    motor_speed_set(motor_id_t::MOTOR_1, speed);
+    motor_speed_set(motor_id_t::MOTOR_2, -speed);
+    motor_speed_set(motor_id_t::MOTOR_3, -speed);
+    motor_speed_set(motor_id_t::MOTOR_4, speed);
+}
+
+void Motor_driver::move_right(motor_speed_t speed)
+{
+    motor_speed_set(motor_id_t::MOTOR_1, -speed);
+    motor_speed_set(motor_id_t::MOTOR_2, speed);
+    motor_speed_set(motor_id_t::MOTOR_3, speed);
+    motor_speed_set(motor_id_t::MOTOR_4, -speed);
+}
+
 void Motor_driver::motor_speed_set(motor_id_t motor_id, motor_speed_t speed)
 {
     _motors.at(motor_id_get(motor_id)).speed_set(speed);

@@ -11,6 +11,7 @@ public:
     App ();
 
     void init ();
+    void run ();
 
 private:
     hw::tb6612::Motor_driver motor_drv;

@@ -24,7 +24,10 @@ public:
     Motor_driver();
 
     void init();
-    void motor_speed_set(motor_id_t motor_id, motor_speed_t speed);
+    void move_forward(motor_speed_t speed);
+    void move_backward(motor_speed_t speed);
+    void move_left(motor_speed_t speed);
+    void move_right(motor_speed_t speed);
 
 private:
     static constexpr uint32_t MOTORS_ARRAY_SIZE =
@@ -32,6 +35,7 @@ private:
 
     std::array<Motor, MOTORS_ARRAY_SIZE> _motors;
 
+    void motor_speed_set(motor_id_t motor_id, motor_speed_t speed);
     static void gpio_init(void);
     static void timer_init(void);
 };

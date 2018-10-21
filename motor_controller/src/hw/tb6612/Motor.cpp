@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "Motor.hpp"
 
 namespace hw
@@ -38,9 +40,20 @@ void Motor::init()
 
 void Motor::speed_set(motor_speed_t speed)
 {
-    _gpio_dir->BSRRL = (1 << _pin_dir1);
-    _gpio_dir->BSRRH = (1 << _pin_dir2);
-    _tim_channel_reg = speed;
+    assert(speed < MOTOR_SPEED_MAX);
+
+    if (speed > 0)
+    {
+        move_forward(speed);
+    }
+    else if (speed < 0)
+    {
+        move_backward(speed);
+    }
+    else
+    {
+        emergency_stop();
+    }
 }
 
 void Motor::emergency_stop()
@@ -48,6 +61,20 @@ void Motor::emergency_stop()
     _gpio_dir->BSRRH = (1 << _pin_dir1);
     _gpio_dir->BSRRH = (1 << _pin_dir2);
     _tim_channel_reg = 0;
+}
+
+void Motor::move_forward(motor_speed_t speed)
+{
+    _gpio_dir->BSRRL = (1 << _pin_dir1);
+    _gpio_dir->BSRRH = (1 << _pin_dir2);
+    _tim_channel_reg = speed;
+}
+
+void Motor::move_backward(motor_speed_t speed)
+{
+    _gpio_dir->BSRRH = (1 << _pin_dir1);
+    _gpio_dir->BSRRL = (1 << _pin_dir2);
+    _tim_channel_reg = -speed;
 }
 
 }
