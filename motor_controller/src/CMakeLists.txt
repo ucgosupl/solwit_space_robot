@@ -8,15 +8,18 @@ enable_language(ASM)
 project(template_stm32f4)
 
 set(INCLUDE_DIRS
-    code
-    hw
+	.
+#    code
+#    hw
     utils
     external/stm32
     external/cmsis
 )
 
 set(CPP_SRCS
-	 
+	hw/tb6612/Motor.cpp
+	hw/tb6612/Motor_driver.cpp
+	code/App/App.cpp
 )
 
 set(C_SRCS
@@ -24,7 +27,9 @@ set(C_SRCS
 	hw/gpio_f4/gpio_f4.c
 	hw/startup/hardfault.c
     hw/startup/vectors.c
+    utils/syscalls.c
 	main.c
+#	hw/tb6612/tb6612.c
 )
 
 set(ASM_SRCS
