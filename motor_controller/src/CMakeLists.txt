@@ -19,6 +19,7 @@ set(INCLUDE_DIRS
 set(CPP_SRCS
 	hw/tb6612/Motor.cpp
 	hw/tb6612/Motor_driver.cpp
+	hw/time/Time.cpp
 	hw/uart/Uart.cpp
 	hw/uart/Utility.cpp
 	hw/uart/Serial.cpp
