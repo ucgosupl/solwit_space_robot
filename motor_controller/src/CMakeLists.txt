@@ -7,13 +7,13 @@ enable_language(ASM)
 
 project(template_stm32f4)
 
+#todo: compile rosserial_client in separate cmake to static library
 set(INCLUDE_DIRS
 	.
-#    code
-#    hw
     utils
     external/stm32
     external/cmsis
+	external/ros_lib
 )
 
 set(CPP_SRCS
@@ -24,6 +24,9 @@ set(CPP_SRCS
 	hw/uart/Utility.cpp
 	hw/uart/Serial.cpp
 	code/App/App.cpp
+	code/Rosserial/Stm32_client.cpp
+	external/ros_lib/duration.cpp
+	external/ros_lib/time.cpp
 )
 
 set(C_SRCS

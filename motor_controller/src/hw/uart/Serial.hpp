@@ -14,6 +14,7 @@ public:
 
     void init();
     int send(uint8_t *buf, int32_t n_bytes);
+    int recv();
 private:
     Uart _drv;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hw/tb6612/Motor_driver.hpp"
-#include "hw/uart/Serial.hpp"
+#include "code/Rosserial/ros.h"
 
 namespace app
 {
@@ -16,7 +16,8 @@ public:
 
 private:
     hw::tb6612::Motor_driver _motor_drv;
-    hw::uart::Serial _serial_drv;
+    ros::NodeHandle _ros_node;
+    ros::Publisher _ros_motor;
 };
 
 }
