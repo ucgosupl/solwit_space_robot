@@ -23,11 +23,12 @@ constexpr uint32_t UART_RX_PIN = 11;
 #define UART_DMA DMA1_Stream3
 
 Serial::Serial()
-    : _drv{GPIOB,
+    : _dma(dma::Id::Dma1, dma::Stream::Stream3)
+    , _drv{GPIOB,
             UART_TX_PIN,
             UART_RX_PIN,
             USART3,
-            UART_DMA}
+            &_dma}
 {
 
 }
@@ -40,7 +41,7 @@ void Serial::init()
 
 int Serial::send(uint8_t *buf, int32_t n_bytes)
 {
-    return _drv.send_buf(buf, n_bytes);
+    return _drv.send_buf(buf, n_bytes, dma::Channel::Channel4);
 }
 
 int Serial::recv()

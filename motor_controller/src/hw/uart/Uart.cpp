@@ -1,5 +1,7 @@
 #include "Uart.hpp"
 
+#include "hw/bitband.hpp"
+
 namespace hw
 {
 namespace uart
@@ -15,7 +17,7 @@ Uart::Uart(GPIO_TypeDef *gpio,
            uint32_t pin_tx,
            uint32_t pin_rx,
            USART_TypeDef *uart,
-           DMA_Stream_TypeDef *dma)
+           dma::Dma *dma)
         : _gpio{gpio}
         , _pin_tx{pin_tx}
         , _pin_rx{pin_rx}
@@ -34,9 +36,9 @@ void Uart::init()
     gpio_af_config(_gpio, _pin_rx, GPIO_AF_USART3);
 
     // Initialize DMA
-    RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
-    NVIC_SetPriority(DMA1_Stream3_IRQn, DMA_PRIORITY);
-    NVIC_EnableIRQ(DMA1_Stream3_IRQn);
+    _dma->init();
+    _dma->configure_irq(DMA_PRIORITY);
+    _dma->enable_irq();
 
     // Initialize USART peripheral
     RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
@@ -49,7 +51,7 @@ void Uart::init()
     _uart->CR1 = USART_CR1_RXNEIE | USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
 }
 
-int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes)
+int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel)
 {
     if ((buf == nullptr) || (n_bytes < 1)) {
         // Invalid arguments
@@ -58,25 +60,17 @@ int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes)
 
     //todo: return busy
 
-    //setup dma
-    _dma->PAR = (uint32_t) &_uart->DR;
-    _dma->M0AR = (uint32_t)buf;
-    _dma->NDTR = n_bytes;
-
-    _dma->CR = (4 << 25)        // Channel 4
-            | (2 << 16)         // Priority high
-            | DMA_SxCR_MINC     // Memory increment
-            | (1 << 6)          // Memory to peripheral
-            | DMA_SxCR_TCIE;    // Transfer complete interrupt enable
-
-    _dma->CR |= DMA_SxCR_EN;
+    _dma->bind_memory_to_peripheral(&_uart->DR, buf, n_bytes, channel);
 
     return 0;
 }
 
 bool Uart::is_rx_pending()
 {
-    return ! !(_uart->SR & USART_SR_RXNE);
+    constexpr uint32_t USART_SR_RXNE_bit = 5;
+    auto *uart_sr_rxne_bit = get_bitband_periph_addr(&_uart->SR, USART_SR_RXNE_bit);
+
+    return *uart_sr_rxne_bit == 1;
 }
 
 uint8_t Uart::read_byte()
@@ -86,21 +80,17 @@ uint8_t Uart::read_byte()
 
 void Uart::uart_irq_handler()
 {
-    if (is_rx_pending()) {
+    if (is_rx_pending())
+    {
+        //data is unused for now it is read only to clear a flag
         auto data = read_byte();
+        (void)data;
     }
 }
 
 void Uart::dma_irq_handler()
 {
-    auto lisr = DMA1->LISR;
-
-    if (0 != (lisr & DMA_LISR_TCIF3))
-    {
-        /* Clear transfer complete flag and DMA enable flag */
-        DMA1->LIFCR |= DMA_LIFCR_CTCIF3;
-        _dma->CR &= ~(DMA_SxCR_EN);
-    }
+    _dma->dma_irq_handler();
 }
 
 } //uart
