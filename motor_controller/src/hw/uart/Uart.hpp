@@ -36,9 +36,9 @@ private:
     USART_TypeDef * const _uart;
     dma::Dma * const _dma;
 
-    void gpio_init();
-    void dma_init();
-    void usart_init();
+    void gpio_config();
+    void dma_config();
+    void uart_config();
 };
 
 } //uart

@@ -28,12 +28,12 @@ Uart::Uart(GPIO_TypeDef *gpio,
 
 void Uart::init()
 {
-    gpio_init();
-    dma_init();
-    usart_init();
+    gpio_config();
+    dma_config();
+    uart_config();
 }
 
-void Uart::gpio_init()
+void Uart::gpio_config()
 {
     constexpr uint32_t RCC_AHB1ENR_GPIOBEN_bit = 1;
 
@@ -44,14 +44,14 @@ void Uart::gpio_init()
     gpio_af_config(_gpio, _pin_rx, GPIO_AF_USART3);
 }
 
-void Uart::dma_init()
+void Uart::dma_config()
 {
     _dma->init();
     _dma->configure_irq(DMA_PRIORITY);
     _dma->enable_irq();
 }
 
-void Uart::usart_init()
+void Uart::uart_config()
 {
     constexpr uint32_t RCC_APB1ENR_USART3EN_bit = 18;
 
