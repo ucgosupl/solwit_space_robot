@@ -35,6 +35,10 @@ private:
     const uint32_t _pin_rx;
     USART_TypeDef * const _uart;
     dma::Dma * const _dma;
+
+    void gpio_init();
+    void dma_init();
+    void usart_init();
 };
 
 } //uart

@@ -28,18 +28,30 @@ Uart::Uart(GPIO_TypeDef *gpio,
 
 void Uart::init()
 {
+    gpio_init();
+    dma_init();
+    usart_init();
+}
+
+void Uart::gpio_init()
+{
     // Initialize GPIOs
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
     gpio_mode_config(_gpio, _pin_tx, GPIO_MODE_AF);
     gpio_mode_config(_gpio, _pin_rx, GPIO_MODE_AF);
     gpio_af_config(_gpio, _pin_tx, GPIO_AF_USART3);
     gpio_af_config(_gpio, _pin_rx, GPIO_AF_USART3);
+}
 
-    // Initialize DMA
+void Uart::dma_init()
+{
     _dma->init();
     _dma->configure_irq(DMA_PRIORITY);
     _dma->enable_irq();
+}
 
+void Uart::usart_init()
+{
     // Initialize USART peripheral
     RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
     _uart->BRR = APB1_CLOCK_FREQ / UART_BAUD_RATE;
@@ -53,7 +65,8 @@ void Uart::init()
 
 int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel)
 {
-    if ((buf == nullptr) || (n_bytes < 1)) {
+    if ((buf == nullptr) || (n_bytes < 1))
+    {
         // Invalid arguments
         return -1;
     }
