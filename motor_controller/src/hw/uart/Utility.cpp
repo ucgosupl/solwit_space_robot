@@ -1,6 +1,8 @@
 #include "Uart.hpp"
 #include "Utility.hpp"
 
+#include "bsp/board.hpp"
+
 namespace hw
 {
 namespace uart
@@ -32,12 +34,12 @@ void Utility::dma_irq_handler()
 } //uart
 } //hw
 
-extern "C" void USART3_IRQHandler(void)
+extern "C" void SERIAL_UART_USART_IRQ_HANDLER(void)
 {
     hw::uart::Utility::uart_irq_handler();
 }
 
-extern "C" void DMA1_Stream3_IRQHandler(void)
+extern "C" void SERIAL_UART_DMA_IRQ_HANDLER(void)
 {
     hw::uart::Utility::dma_irq_handler();
 }

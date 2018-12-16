@@ -2,7 +2,7 @@
 extern "C"
 {
 #include "platform_specific.h"
-#include "hw/gpio_f4/gpio_f4.h"
+#include "hw/gpio/gpio_f4.h"
 }
 
 #include "Uart.hpp"
@@ -10,24 +10,22 @@ extern "C"
 
 #include "Serial.hpp"
 
+#include "bsp/board.hpp"
+
 namespace hw
 {
 namespace uart
 {
 
-/** Pin number used for USART TX - PB10. */
-constexpr uint32_t UART_TX_PIN = 10;
-/** Pin number used for USART RX - PB11. */
-constexpr uint32_t UART_RX_PIN = 11;
-/** DMA Stream used by USART TX. */
-#define UART_DMA DMA1_Stream3
-
 Serial::Serial()
-    : _drv{GPIOB,
-            UART_TX_PIN,
-            UART_RX_PIN,
-            USART3,
-            UART_DMA}
+    : _dma(SERIAL_UART_TX_DMA_ID, SERIAL_UART_TX_DMA_STREAM)
+    , _gpio(SERIAL_UART_GPIO_PORT)
+    , _drv{&_gpio,
+           SERIAL_UART_TX_PIN,
+           SERIAL_UART_RX_PIN,
+           &_dma,
+           SERIAL_UART_ID
+           }
 {
 
 }
@@ -35,12 +33,22 @@ Serial::Serial()
 void Serial::init()
 {
     Utility::driver_set(&_drv);
-    _drv.init();
+    _drv.init(SERIAL_UART_BAUD_RATE);
 }
 
 int Serial::send(uint8_t *buf, int32_t n_bytes)
 {
-    return _drv.send_buf(buf, n_bytes);
+    return _drv.send_buf(buf, n_bytes, SERIAL_UART_TX_DMA_CHANNEL);
+}
+
+int Serial::recv()
+{
+    if(_drv.is_rx_pending())
+    {
+        return _drv.read_byte();
+    }
+
+    return -1;
 }
 
 }   //uart

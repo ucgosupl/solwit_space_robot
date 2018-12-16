@@ -5,18 +5,20 @@ set(CMAKE_TOOLCHAIN_FILE Toolchain-arm-gcc.cmake)
 # Allow assembler
 enable_language(ASM)
 
-project(template_stm32f4)
+project(solwit_space_robot)
 
+#todo: compile rosserial_client in separate cmake to static library
 set(INCLUDE_DIRS
 	.
-#    code
-#    hw
     utils
     external/stm32
     external/cmsis
+	external/ros_lib
 )
 
 set(CPP_SRCS
+	hw/dma/Dma.cpp
+	hw/gpio/Gpio.cpp
 	hw/tb6612/Motor.cpp
 	hw/tb6612/Motor_driver.cpp
 	hw/time/Time.cpp
@@ -24,11 +26,14 @@ set(CPP_SRCS
 	hw/uart/Utility.cpp
 	hw/uart/Serial.cpp
 	code/App/App.cpp
+	code/Rosserial/Stm32_client.cpp
+	external/ros_lib/duration.cpp
+	external/ros_lib/time.cpp
 )
 
 set(C_SRCS
     hw/core_init/core_init.c
-	hw/gpio_f4/gpio_f4.c
+	hw/gpio/gpio_f4.c
 	hw/startup/hardfault.c
     hw/startup/vectors.c
     utils/syscalls.c
