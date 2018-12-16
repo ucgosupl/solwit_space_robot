@@ -7,6 +7,7 @@ extern "C"
 }
 
 #include "hw/dma/Dma.hpp"
+#include "hw/gpio/Gpio.hpp"
 
 namespace hw
 {
@@ -16,11 +17,12 @@ namespace uart
 class Uart
 {
 public:
-    Uart(GPIO_TypeDef *gpio,
-           uint32_t pin_tx,
-           uint32_t pin_rx,
-           USART_TypeDef *uart,
-           dma::Dma *dma);
+    Uart(gpio::Gpio *gpio,
+         gpio::Pin pin_tx,
+         gpio::Pin pin_rx,
+         dma::Dma *dma,
+         USART_TypeDef *uart
+         );
 
     void init();
     int32_t send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel);
@@ -30,11 +32,11 @@ public:
     void dma_irq_handler();
 
 private:
-    GPIO_TypeDef * const _gpio;
-    const uint32_t _pin_tx;
-    const uint32_t _pin_rx;
-    USART_TypeDef * const _uart;
+    gpio::Gpio * const _gpio;
+    gpio::Pin _pin_tx;
+    gpio::Pin _pin_rx;
     dma::Dma * const _dma;
+    USART_TypeDef * const _uart;
 
     void gpio_config();
     void dma_config();

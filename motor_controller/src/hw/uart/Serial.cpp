@@ -15,20 +15,29 @@ namespace hw
 namespace uart
 {
 
+/** GPIO port used */
+constexpr gpio::Port SERIAL_UART_GPIO_PORT = gpio::Port::B;
 /** Pin number used for USART TX - PB10. */
-constexpr uint32_t UART_TX_PIN = 10;
+constexpr gpio::Pin SERIAL_UART_TX_PIN = gpio::Pin::P10;
 /** Pin number used for USART RX - PB11. */
-constexpr uint32_t UART_RX_PIN = 11;
-/** DMA Stream used by USART TX. */
-#define UART_DMA DMA1_Stream3
+constexpr gpio::Pin SERIAL_UART_RX_PIN = gpio::Pin::P11;
+
+/** DMA id used by USART TX. */
+constexpr dma::Id SERIAL_UART_TX_DMA_ID = dma::Id::Dma1;
+/** DMA stream used by USART TX. */
+constexpr dma::Stream SERIAL_UART_TX_DMA_STREAM = dma::Stream::Stream3;
+/** DMA channel used by USART TX. */
+constexpr dma::Channel SERIAL_UART_TX_DMA_CHANNEL = dma::Channel::Channel4;
 
 Serial::Serial()
-    : _dma(dma::Id::Dma1, dma::Stream::Stream3)
-    , _drv{GPIOB,
-            UART_TX_PIN,
-            UART_RX_PIN,
-            USART3,
-            &_dma}
+    : _dma(SERIAL_UART_TX_DMA_ID, SERIAL_UART_TX_DMA_STREAM)
+    , _gpio(SERIAL_UART_GPIO_PORT)
+    , _drv{&_gpio,
+           SERIAL_UART_TX_PIN,
+           SERIAL_UART_RX_PIN,
+           &_dma,
+           USART3
+           }
 {
 
 }
@@ -41,7 +50,7 @@ void Serial::init()
 
 int Serial::send(uint8_t *buf, int32_t n_bytes)
 {
-    return _drv.send_buf(buf, n_bytes, dma::Channel::Channel4);
+    return _drv.send_buf(buf, n_bytes, SERIAL_UART_TX_DMA_CHANNEL);
 }
 
 int Serial::recv()

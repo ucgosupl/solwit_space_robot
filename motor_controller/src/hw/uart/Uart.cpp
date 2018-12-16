@@ -13,16 +13,17 @@ constexpr uint32_t UART_BAUD_RATE = 115200;
 constexpr uint32_t DMA_PRIORITY = 4;
 constexpr uint32_t UART_PRIORITY = 5;
 
-Uart::Uart(GPIO_TypeDef *gpio,
-           uint32_t pin_tx,
-           uint32_t pin_rx,
-           USART_TypeDef *uart,
-           dma::Dma *dma)
+Uart::Uart(gpio::Gpio *gpio,
+           gpio::Pin pin_tx,
+           gpio::Pin pin_rx,
+           dma::Dma *dma,
+           USART_TypeDef *uart
+           )
         : _gpio{gpio}
         , _pin_tx{pin_tx}
         , _pin_rx{pin_rx}
-        , _uart{uart}
         , _dma{dma}
+        , _uart{uart}
 {
 }
 
@@ -35,13 +36,9 @@ void Uart::init()
 
 void Uart::gpio_config()
 {
-    constexpr uint32_t RCC_AHB1ENR_GPIOBEN_bit = 1;
-
-    bitband_periph_set(&RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN_bit);
-    gpio_mode_config(_gpio, _pin_tx, GPIO_MODE_AF);
-    gpio_mode_config(_gpio, _pin_rx, GPIO_MODE_AF);
-    gpio_af_config(_gpio, _pin_tx, GPIO_AF_USART3);
-    gpio_af_config(_gpio, _pin_rx, GPIO_AF_USART3);
+    _gpio->init();
+    _gpio->pin_alternative_mode_config(_pin_tx, GPIO_AF_USART3);
+    _gpio->pin_alternative_mode_config(_pin_rx, GPIO_AF_USART3);
 }
 
 void Uart::dma_config()

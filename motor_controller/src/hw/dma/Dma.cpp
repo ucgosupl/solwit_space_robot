@@ -70,7 +70,7 @@ public:
         }
     }
 
-    static constexpr uint32_t calculate_rcc_ahb_bit(Id id)
+    static constexpr uint32_t calculate_rcc_ahb1enr_bit(Id id)
     {
         return 21 + static_cast<int>(id);
     }
@@ -92,7 +92,7 @@ Dma::Dma(Id id, Stream stream)
 
 void Dma::init()
 {
-    bitband_periph_set(&RCC->AHB1ENR, Utils::calculate_rcc_ahb_bit(_id));
+    bitband_periph_set(&RCC->AHB1ENR, Utils::calculate_rcc_ahb1enr_bit(_id));
 }
 
 void Dma::configure_irq(uint32_t priority)

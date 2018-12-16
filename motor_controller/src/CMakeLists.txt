@@ -18,6 +18,7 @@ set(INCLUDE_DIRS
 
 set(CPP_SRCS
 	hw/dma/Dma.cpp
+	hw/gpio/Gpio.cpp
 	hw/tb6612/Motor.cpp
 	hw/tb6612/Motor_driver.cpp
 	hw/time/Time.cpp

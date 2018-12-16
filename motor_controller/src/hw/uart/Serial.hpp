@@ -2,6 +2,7 @@
 
 #include "Uart.hpp"
 #include "hw/dma/Dma.hpp"
+#include "hw/gpio/Gpio.hpp"
 
 namespace hw
 {
@@ -18,7 +19,11 @@ public:
     int recv();
 
 private:
+    //for now devices are bound to serial,but for shared devices like dma and
+    //gpio it may be problematic. It could be better to obtain them somehow
+    //from global device controller.
     dma::Dma _dma;
+    gpio::Gpio _gpio;
     Uart _drv;
 };
 
