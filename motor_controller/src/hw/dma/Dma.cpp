@@ -92,8 +92,7 @@ Dma::Dma(Id id, Stream stream)
 
 void Dma::init()
 {
-    auto *dma_rccahb_bit = get_bitband_periph_addr(&RCC->AHB1ENR, Utils::calculate_rcc_ahb_bit(_id));
-    *dma_rccahb_bit = 1;
+    bitband_periph_set(&RCC->AHB1ENR, Utils::calculate_rcc_ahb_bit(_id));
 }
 
 void Dma::configure_irq(uint32_t priority)
@@ -128,14 +127,10 @@ void Dma::dma_irq_handler()
 {
     constexpr uint32_t DMA_SxCR_EN_bit = 0;
 
-    auto *tcif_bit = get_bitband_periph_addr(_irq_regs._isr, _irq_regs._tcif_bit_number);
-    auto *ctcif_bit = get_bitband_periph_addr(_irq_regs._ifcr, _irq_regs._tcif_bit_number);
-    auto *dma_scr_en_bit = get_bitband_periph_addr(&_dma->CR, DMA_SxCR_EN_bit);
-
-    if (0 != *tcif_bit)
+    if (0 != bitband_periph_get(_irq_regs._isr, _irq_regs._tcif_bit_number))
     {
-        *ctcif_bit = 1;
-        *dma_scr_en_bit = 0;
+        bitband_periph_set(_irq_regs._ifcr, _irq_regs._tcif_bit_number);
+        bitband_periph_clear(&_dma->CR, DMA_SxCR_EN_bit);
     }
 }
 } //dma

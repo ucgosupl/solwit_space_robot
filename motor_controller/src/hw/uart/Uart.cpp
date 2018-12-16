@@ -35,8 +35,9 @@ void Uart::init()
 
 void Uart::gpio_init()
 {
-    // Initialize GPIOs
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+    constexpr uint32_t RCC_AHB1ENR_GPIOBEN_bit = 1;
+
+    bitband_periph_set(&RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN_bit);
     gpio_mode_config(_gpio, _pin_tx, GPIO_MODE_AF);
     gpio_mode_config(_gpio, _pin_rx, GPIO_MODE_AF);
     gpio_af_config(_gpio, _pin_tx, GPIO_AF_USART3);
@@ -52,8 +53,9 @@ void Uart::dma_init()
 
 void Uart::usart_init()
 {
-    // Initialize USART peripheral
-    RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
+    constexpr uint32_t RCC_APB1ENR_USART3EN_bit = 18;
+
+    bitband_periph_set(&RCC->APB1ENR, RCC_APB1ENR_USART3EN_bit);
     _uart->BRR = APB1_CLOCK_FREQ / UART_BAUD_RATE;
 
     NVIC_SetPriority(USART3_IRQn, UART_PRIORITY);
@@ -81,9 +83,8 @@ int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel)
 bool Uart::is_rx_pending()
 {
     constexpr uint32_t USART_SR_RXNE_bit = 5;
-    auto *uart_sr_rxne_bit = get_bitband_periph_addr(&_uart->SR, USART_SR_RXNE_bit);
 
-    return *uart_sr_rxne_bit == 1;
+    return bitband_periph_get(&_uart->SR, USART_SR_RXNE_bit) == 1;
 }
 
 uint8_t Uart::read_byte()
