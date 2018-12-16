@@ -32,7 +32,7 @@ set(CPP_SRCS
 
 set(C_SRCS
     hw/core_init/core_init.c
-	hw/gpio_f4/gpio_f4.c
+	hw/gpio/gpio_f4.c
 	hw/startup/hardfault.c
     hw/startup/vectors.c
     utils/syscalls.c

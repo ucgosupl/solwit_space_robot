@@ -3,7 +3,7 @@
 extern "C"
 {
 #include "platform_specific.h"
-#include "hw/gpio_f4/gpio_f4.h"
+#include "hw/gpio/gpio_f4.h"
 }
 
 #include "hw/dma/Dma.hpp"
