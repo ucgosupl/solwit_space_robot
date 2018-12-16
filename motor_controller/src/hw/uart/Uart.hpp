@@ -14,6 +14,18 @@ namespace hw
 namespace uart
 {
 
+enum class Id
+{
+    Usart1,
+    Usart2,
+    Usart3,
+    Usart4,
+    Usart5,
+    Usart6,
+};
+
+using baudrate_t = uint32_t;
+
 class Uart
 {
 public:
@@ -21,10 +33,10 @@ public:
          gpio::Pin pin_tx,
          gpio::Pin pin_rx,
          dma::Dma *dma,
-         USART_TypeDef *uart
+         Id id
          );
 
-    void init();
+    void init(baudrate_t baud);
     int32_t send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel);
     bool is_rx_pending();
     uint8_t read_byte();
@@ -36,11 +48,17 @@ private:
     gpio::Pin _pin_tx;
     gpio::Pin _pin_rx;
     dma::Dma * const _dma;
+    Id _id;
     USART_TypeDef * const _uart;
 
     void gpio_config();
     void dma_config();
-    void uart_config();
+    void uart_config(baudrate_t baud);
+
+    void enable();
+    void set_baudrate(baudrate_t baud);
+    void irq_config(uint32_t priority);
+    void peripheral_config();
 };
 
 } //uart

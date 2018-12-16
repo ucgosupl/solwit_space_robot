@@ -26,8 +26,8 @@ public:
 };
 
 Gpio::Gpio(Port port)
-    : _port(port)
-    , _gpio(reinterpret_cast<GPIO_TypeDef *>(Utils::calculate_address(_port)))
+    : _port{port}
+    , _gpio{reinterpret_cast<GPIO_TypeDef *>(Utils::calculate_address(_port))}
 {};
 
 void Gpio::init()

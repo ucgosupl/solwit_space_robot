@@ -29,6 +29,8 @@ constexpr dma::Stream SERIAL_UART_TX_DMA_STREAM = dma::Stream::Stream3;
 /** DMA channel used by USART TX. */
 constexpr dma::Channel SERIAL_UART_TX_DMA_CHANNEL = dma::Channel::Channel4;
 
+constexpr uart::Id SERIAL_UART_ID = uart::Id::Usart3;
+
 Serial::Serial()
     : _dma(SERIAL_UART_TX_DMA_ID, SERIAL_UART_TX_DMA_STREAM)
     , _gpio(SERIAL_UART_GPIO_PORT)
@@ -36,7 +38,7 @@ Serial::Serial()
            SERIAL_UART_TX_PIN,
            SERIAL_UART_RX_PIN,
            &_dma,
-           USART3
+           SERIAL_UART_ID
            }
 {
 
@@ -45,7 +47,7 @@ Serial::Serial()
 void Serial::init()
 {
     Utility::driver_set(&_drv);
-    _drv.init();
+    _drv.init(SERIAL_UART_BAUD_RATE);
 }
 
 int Serial::send(uint8_t *buf, int32_t n_bytes)

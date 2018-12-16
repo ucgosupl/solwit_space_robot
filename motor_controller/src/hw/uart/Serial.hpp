@@ -9,6 +9,8 @@ namespace hw
 namespace uart
 {
 
+/** USART baud rate. */
+constexpr uint32_t SERIAL_UART_BAUD_RATE = 115200;
 class Serial
 {
 public:

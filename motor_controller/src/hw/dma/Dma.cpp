@@ -83,11 +83,11 @@ Dma::DmaInterruptRegs::DmaInterruptRegs(Id id, Stream stream)
 {};
 
 Dma::Dma(Id id, Stream stream)
-    : _id(id)
-    , _stream(stream)
-    , _dma(reinterpret_cast<DMA_Stream_TypeDef *>(Utils::calculate_address(id, stream)))
-    , _irq_regs(id, stream)
-    , _irqn(Utils::calculate_irqn(_id, _stream))
+    : _id{id}
+    , _stream{stream}
+    , _dma{reinterpret_cast<DMA_Stream_TypeDef *>(Utils::calculate_address(id, stream))}
+    , _irq_regs{id, stream}
+    , _irqn{Utils::calculate_irqn(_id, _stream)}
 {};
 
 void Dma::init()

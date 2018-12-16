@@ -43,9 +43,6 @@ enum class Pin
 //for now using mode defines from gpio_f4.h, later can update to enum class or something else.
 using Mode = uint32_t;
 
-//The same mode is used for USART1-3, other usarts have different numbers, but they are not supported here.
-constexpr Mode GPIO_AF_USART = GPIO_AF_USART1;
-
 class Gpio
 {
 public:
