@@ -10,10 +10,10 @@ class IRosserial_client
 public:
     virtual ~IRosserial_client() = default;
 
-    virtual void init();
-    virtual int read();
-    virtual void write(uint8_t* data, int length);
-    virtual unsigned long time();
+    virtual void init() = 0;
+    virtual int read() = 0;
+    virtual void write(uint8_t* data, int length) = 0;
+    virtual unsigned long time() = 0;
 };
 
 class Stm32_client : public IRosserial_client

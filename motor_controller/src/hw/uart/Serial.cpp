@@ -43,9 +43,12 @@ int Serial::send(uint8_t *buf, int32_t n_bytes)
 
 int Serial::recv()
 {
-    //check ready
-    //read byte
-    //return byte or error
+    if(_drv.is_rx_pending())
+    {
+        return _drv.read_byte();
+    }
+
+    return -1;
 }
 
 }   //uart

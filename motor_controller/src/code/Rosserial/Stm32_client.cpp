@@ -1,5 +1,7 @@
 #include "Stm32_client.hpp"
 
+#include "hw/time/Time.hpp"
+
 namespace rosserial
 {
 
@@ -25,7 +27,7 @@ void Stm32_client::write(uint8_t* data, int length)
 
 unsigned long Stm32_client::time()
 {
-    return 0;
+    return hw::time::ms_get();
 }
 
 }

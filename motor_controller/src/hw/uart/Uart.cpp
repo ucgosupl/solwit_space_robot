@@ -199,7 +199,7 @@ void Uart::irq_config(uint32_t priority)
 void Uart::peripheral_config()
 {
     _uart->CR3 = USART_CR3_DMAT;
-    _uart->CR1 = USART_CR1_RXNEIE | USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
+    _uart->CR1 = USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
 }
 
 int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel)
