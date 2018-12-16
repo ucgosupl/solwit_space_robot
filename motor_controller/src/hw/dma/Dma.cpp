@@ -11,6 +11,7 @@ class Utils
 {
 public:
     static constexpr uint32_t DMA_OFFSET = DMA2_BASE - DMA1_BASE;
+    static constexpr uint32_t DMA_STREAM_START = DMA1_Stream0_BASE - DMA1_BASE;
     static constexpr uint32_t DMA_STREAM_OFFSET = DMA1_Stream1_BASE - DMA1_Stream0_BASE;
 
     static constexpr uint32_t get_base_addr(Id id)
@@ -20,7 +21,7 @@ public:
 
     static constexpr uint32_t calculate_address(Id id, Stream stream)
     {
-        return get_base_addr(id) + DMA_STREAM_OFFSET * static_cast<uint32_t>(stream);
+        return get_base_addr(id) + DMA_STREAM_START + DMA_STREAM_OFFSET * static_cast<uint32_t>(stream);
     }
 
     static constexpr IRQn_Type get_base_irqn(Id id)

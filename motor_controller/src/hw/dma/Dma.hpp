@@ -15,6 +15,7 @@ enum class Id
 
 enum class Stream
 {
+    Stream0,
     Stream1,
     Stream2,
     Stream3,
@@ -26,6 +27,7 @@ enum class Stream
 
 enum class Channel
 {
+    Channel0,
     Channel1,
     Channel2,
     Channel3,
