@@ -5,7 +5,7 @@ set(CMAKE_TOOLCHAIN_FILE Toolchain-arm-gcc.cmake)
 # Allow assembler
 enable_language(ASM)
 
-project(template_stm32f4)
+project(solwit_space_robot)
 
 #todo: compile rosserial_client in separate cmake to static library
 set(INCLUDE_DIRS
