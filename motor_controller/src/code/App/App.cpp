@@ -33,18 +33,17 @@ void App::run()
 
     //todo: motors not active only for tests
 
-    _ros_node.negotiateTopics();
-    hw::time::delay(1000);
-
     while (1)
     {
-        msg.angular.x++;
+        if (_ros_node.connected())
+        {
+            msg.angular.x++;
 
-        _ros_publisher.publish(&msg);
+            _ros_publisher.publish(&msg);
+        }
+
         _ros_node.spinOnce();
-        hw::time::delay(1000);
-
-        //todo: optional delay
+        hw::time::delay(1);
     }
 
 //    while (1)
