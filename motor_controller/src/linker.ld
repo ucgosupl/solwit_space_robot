@@ -96,7 +96,7 @@ PROVIDE(__bkp_ram_start = __bkp_ram_start);
 PROVIDE(__bkp_ram_size = __bkp_ram_size);
 PROVIDE(__bkp_ram_end = __bkp_ram_end);
 
-__stack_size = 512;
+__stack_size = 1024;
 
 PROVIDE(__stack_size = __stack_size);
 
