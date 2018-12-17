@@ -6,11 +6,11 @@ namespace uart
 {
 //todo: change all values to nucleo
 /** GPIO port used */
-constexpr gpio::Port SERIAL_UART_GPIO_PORT = gpio::Port::C;
+constexpr gpio::Port SERIAL_UART_GPIO_PORT = gpio::Port::A;
 /** Pin number used for USART TX */
-constexpr gpio::Pin SERIAL_UART_TX_PIN = gpio::Pin::P06;
+constexpr gpio::Pin SERIAL_UART_TX_PIN = gpio::Pin::P11;
 /** Pin number used for USART RX */
-constexpr gpio::Pin SERIAL_UART_RX_PIN = gpio::Pin::P07;
+constexpr gpio::Pin SERIAL_UART_RX_PIN = gpio::Pin::P12;
 
 /** DMA id used by USART TX. */
 constexpr dma::Id SERIAL_UART_TX_DMA_ID = dma::Id::Dma2;
