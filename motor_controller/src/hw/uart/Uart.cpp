@@ -176,7 +176,7 @@ void Uart::uart_config(baudrate_t baud)
 {
     enable();
     set_baudrate(baud);
-    irq_config(UART_PRIORITY);
+    //irq_config(UART_PRIORITY);
     peripheral_config();
 }
 
@@ -210,7 +210,8 @@ int32_t Uart::send_buf(uint8_t *buf, int32_t n_bytes, dma::Channel channel)
         return -1;
     }
 
-    //todo: return busy
+    while (_dma->is_in_progress())
+        ;
 
     _dma->bind_memory_to_peripheral(&_uart->DR, buf, n_bytes, channel);
 

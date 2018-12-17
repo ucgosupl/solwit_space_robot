@@ -133,6 +133,7 @@ Dma::Dma(Id id, Stream stream)
     , _dma{reinterpret_cast<DMA_Stream_TypeDef *>(Utils::calculate_address(id, stream))}
     , _irq_regs{id, stream}
     , _irqn{Utils::get_irqn(_id, _stream)}
+    , _in_progress(false)
 {};
 
 void Dma::init()
@@ -155,6 +156,8 @@ void Dma::bind_memory_to_peripheral(volatile void *periph_reg,
                                uint32_t n_bytes,
                                Channel channel)
 {
+    _in_progress = true;
+
     _dma->PAR = reinterpret_cast<uint32_t>(periph_reg);
     _dma->M0AR = reinterpret_cast<uint32_t>(mem_reg);
     _dma->NDTR = n_bytes;
@@ -168,6 +171,11 @@ void Dma::bind_memory_to_peripheral(volatile void *periph_reg,
     _dma->CR |= DMA_SxCR_EN;
 }
 
+bool Dma::is_in_progress()
+{
+    return _in_progress;
+}
+
 void Dma::dma_irq_handler()
 {
     constexpr uint32_t DMA_SxCR_EN_bit = 0;
@@ -176,6 +184,7 @@ void Dma::dma_irq_handler()
     {
         bitband_periph_set(_irq_regs._ifcr, _irq_regs._tcif_bit_number);
         bitband_periph_clear(&_dma->CR, DMA_SxCR_EN_bit);
+        _in_progress = false;
     }
 }
 } //dma

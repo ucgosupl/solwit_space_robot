@@ -60,6 +60,7 @@ public:
                                    uint32_t n_bytes,
                                    Channel channel);
     void dma_irq_handler();
+    bool is_in_progress();
 
 private:
     Id _id;
@@ -67,6 +68,7 @@ private:
     DMA_Stream_TypeDef * const _dma;
     DmaInterruptRegs _irq_regs;
     IRQn_Type _irqn;
+    bool _in_progress;
 };
 
 } //dma
