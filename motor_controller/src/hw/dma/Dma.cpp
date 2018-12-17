@@ -24,23 +24,67 @@ public:
         return get_base_addr(id) + DMA_STREAM_START + DMA_STREAM_OFFSET * static_cast<uint32_t>(stream);
     }
 
-    static constexpr IRQn_Type get_base_irqn(Id id)
+    static constexpr IRQn_Type get_irqn(Id id, Stream stream)
     {
         switch (id)
         {
         case Id::Dma1:
-            return DMA1_Stream0_IRQn;
+            return get_irqn_dma1(stream);
         case Id::Dma2:
-            return DMA2_Stream0_IRQn;
+            return get_irqn_dma2(stream);
         default:
-            //assert error
             return NonMaskableInt_IRQn;
         }
     }
 
-    static constexpr IRQn_Type calculate_irqn(Id id, Stream stream)
+    static constexpr IRQn_Type get_irqn_dma1(Stream stream)
     {
-        return static_cast<IRQn_Type>(get_base_irqn(id) + static_cast<int>(stream));
+        switch (stream)
+        {
+        case Stream::Stream0:
+            return DMA1_Stream0_IRQn;
+        case Stream::Stream1:
+            return DMA1_Stream1_IRQn;
+        case Stream::Stream2:
+            return DMA1_Stream2_IRQn;
+        case Stream::Stream3:
+            return DMA1_Stream3_IRQn;
+        case Stream::Stream4:
+            return DMA1_Stream4_IRQn;
+        case Stream::Stream5:
+            return DMA1_Stream5_IRQn;
+        case Stream::Stream6:
+            return DMA1_Stream6_IRQn;
+        case Stream::Stream7:
+            return DMA1_Stream7_IRQn;
+        default:
+            return NonMaskableInt_IRQn;
+        }
+    }
+
+    static constexpr IRQn_Type get_irqn_dma2(Stream stream)
+    {
+        switch (stream)
+        {
+        case Stream::Stream0:
+            return DMA2_Stream0_IRQn;
+        case Stream::Stream1:
+            return DMA2_Stream1_IRQn;
+        case Stream::Stream2:
+            return DMA2_Stream2_IRQn;
+        case Stream::Stream3:
+            return DMA2_Stream3_IRQn;
+        case Stream::Stream4:
+            return DMA2_Stream4_IRQn;
+        case Stream::Stream5:
+            return DMA2_Stream5_IRQn;
+        case Stream::Stream6:
+            return DMA2_Stream6_IRQn;
+        case Stream::Stream7:
+            return DMA2_Stream7_IRQn;
+        default:
+            return NonMaskableInt_IRQn;
+        }
     }
 
     static constexpr uint32_t calculate_isr_address(Id id, Stream stream)
@@ -88,7 +132,7 @@ Dma::Dma(Id id, Stream stream)
     , _stream{stream}
     , _dma{reinterpret_cast<DMA_Stream_TypeDef *>(Utils::calculate_address(id, stream))}
     , _irq_regs{id, stream}
-    , _irqn{Utils::calculate_irqn(_id, _stream)}
+    , _irqn{Utils::get_irqn(_id, _stream)}
 {};
 
 void Dma::init()
